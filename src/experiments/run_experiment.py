@@ -83,7 +83,7 @@ def build_prediction(
         elif model_name == "auto_arima":
             model = AutoARIMAForecaster(season_length=24, seasonal=True, max_p=3, max_q=3)
         elif model_name == "sarima":
-            model = FixedSARIMAForecaster(order=(1, 1, 1), seasonal_order=(1, 1, 1, 24))
+            model = FixedSARIMAForecaster()  # uses DEFAULT_SARIMA_GRID, AICc-selected
             model.fit(train_df["y"].to_numpy())
         elif model_name == "xgboost":
             from src.models.xgboost_model import XGBoostDirectForecaster
