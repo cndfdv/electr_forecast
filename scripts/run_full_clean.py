@@ -137,18 +137,42 @@ def sarima_jobs(horizons: list[int]) -> list[tuple[list[str], bool]]:
     return jobs
 
 
+def _convert_figures_to_png(log_path: Path) -> None:
+    """Convert figures/*.pdf to paper/docx_figures/*.png for Word/pandoc embedding."""
+    src = ROOT / "figures"
+    dst = ROOT / "paper" / "docx_figures"
+    dst.mkdir(parents=True, exist_ok=True)
+    pdfs = sorted(src.glob("*.pdf"))
+    if not pdfs:
+        log("no PDF figures found to convert", log_path)
+        return
+    for pdf in pdfs:
+        png = dst / (pdf.stem + ".png")
+        # pdftoppm ships with poppler; -singlefile drops the trailing -1 page suffix.
+        run_cmd(
+            ["pdftoppm", "-png", "-r", "200", "-singlefile", str(pdf), str(png.with_suffix(""))],
+            log_path,
+            allow_fail=True,
+        )
+
+
 def rebuild_artifacts(log_path: Path) -> None:
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.run_stat_tests", "--results", "results/main_results.csv"], log_path, allow_fail=True)
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.make_latex_tables", "--results", "results/main_results.csv"], log_path)
     run_cmd([str(LIGHT_PY), "-m", "src.figures.make_figures", "--results", "results/main_results.csv", "--output-dir", "figures"], log_path)
-    for name in ["main", "main_review"]:
-        paper_dir = ROOT / "paper"
-        run_cmd(["pdflatex", "-interaction=nonstopmode", f"{name}.tex"], log_path, allow_fail=True, cwd=paper_dir)
-        if name == "main":
-            run_cmd(["bibtex", "main"], log_path, allow_fail=True, cwd=paper_dir)
-            run_cmd(["pdflatex", "-interaction=nonstopmode", f"{name}.tex"], log_path, allow_fail=True, cwd=paper_dir)
-        run_cmd(["pdflatex", "-interaction=nonstopmode", f"{name}.tex"], log_path, allow_fail=True, cwd=paper_dir)
-        run_cmd(["pandoc", f"{name}.tex", "-o", f"{name}.docx"], log_path, allow_fail=True, cwd=paper_dir)
+    _convert_figures_to_png(log_path)
+
+    paper_dir = ROOT / "paper"
+    pandoc_common = [
+        "pandoc", "main.md",
+        "--citeproc",
+        "--bibliography", "references.bib",
+        "--metadata", "link-citations=true",
+    ]
+    # main.md is the single source of truth; .tex / .pdf / .docx are generated.
+    run_cmd(pandoc_common + ["-o", "main.tex"], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(pandoc_common + ["-o", "main.pdf"], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(pandoc_common + ["-o", "main.docx"], log_path, allow_fail=True, cwd=paper_dir)
 
 
 def main() -> None:

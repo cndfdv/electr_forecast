@@ -50,9 +50,19 @@ def load_ecl_aggregate(path: Path) -> pd.DataFrame:
             raise FileNotFoundError(path)
 
     df = pd.read_csv(path, sep=None, engine="python", header=None, compression="infer")
-    maybe_dates = pd.to_datetime(df.iloc[:, 0], errors="coerce")
-    has_timestamp_col = maybe_dates.notna().mean() > 0.95
-    if has_timestamp_col:
+    first_col = df.iloc[:, 0]
+    has_timestamp_col = False
+    maybe_dates: pd.Series | None = None
+    # Only attempt timestamp parsing when the first column is non-numeric. Numeric
+    # values get interpreted as nanoseconds from the Unix epoch by pd.to_datetime,
+    # which silently misclassifies the LSTNet ECL format (no timestamp column,
+    # numeric client readings) as if it had timestamps anchored at 1970.
+    if first_col.dtype == object or pd.api.types.is_string_dtype(first_col):
+        maybe_dates = pd.to_datetime(first_col, errors="coerce")
+        if maybe_dates.notna().mean() > 0.95:
+            sample_year = maybe_dates.dropna().iloc[0].year
+            has_timestamp_col = sample_year >= 1990
+    if has_timestamp_col and maybe_dates is not None:
         dates = maybe_dates
         values = df.iloc[:, 1:].apply(pd.to_numeric, errors="coerce")
     else:

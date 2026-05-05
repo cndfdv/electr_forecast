@@ -16,3 +16,6 @@ data/processed/*
 *.out
 *.synctex.gz
 
+# Training/runtime artifacts (regenerated on every run)
+lightning_logs/
+logs/*.pid
