@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import csv
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -156,6 +157,54 @@ def _convert_figures_to_png(log_path: Path) -> None:
         )
 
 
+def _build_md_paper(paper_dir: Path, stem: str, log_path: Path, lang: str = "en") -> None:
+    """Render <stem>.md to .tex, .pdf, .docx via pandoc + citeproc."""
+    md = f"{stem}.md"
+    common = [
+        "pandoc", md,
+        "--citeproc",
+        "--bibliography", "references.bib",
+        "--metadata", "link-citations=true",
+    ]
+    pdf_extra: list[str]
+    if lang == "ru":
+        pdf_extra = [
+            "--pdf-engine=xelatex",
+            "-V", "mainfont=Times New Roman",
+            "-V", "lang=ru",
+        ]
+    else:
+        pdf_extra = []
+    run_cmd(common + ["-o", f"{stem}.tex"], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(common + pdf_extra + ["-o", f"{stem}.pdf"], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(common + ["-o", f"{stem}.docx"], log_path, allow_fail=True, cwd=paper_dir)
+
+
+def _build_ieee_paper(paper_dir: Path, stem: str, log_path: Path) -> None:
+    """Compile <stem>.tex with pdflatex + bibtex; also produce a .docx with PNG figures."""
+    tex = f"{stem}.tex"
+    run_cmd(["pdflatex", "-interaction=nonstopmode", tex], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(["bibtex", stem], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(["pdflatex", "-interaction=nonstopmode", tex], log_path, allow_fail=True, cwd=paper_dir)
+    run_cmd(["pdflatex", "-interaction=nonstopmode", tex], log_path, allow_fail=True, cwd=paper_dir)
+
+    # DOCX via pandoc, with PDF figure paths swapped for the rasterised PNGs in
+    # docx_figures/ so Word actually shows the figures.
+    src_path = paper_dir / tex
+    src = src_path.read_text(encoding="utf-8")
+    docx_src = re.sub(r"\.\./figures/(fig\d_[a-z_]+)\.pdf", r"docx_figures/\1.png", src)
+    tmp_tex = paper_dir / f"_{stem}_docx.tex"
+    tmp_tex.write_text(docx_src, encoding="utf-8")
+    try:
+        run_cmd(
+            ["pandoc", tmp_tex.name, "--bibliography", "references.bib", "--citeproc",
+             "-o", f"{stem}.docx"],
+            log_path, allow_fail=True, cwd=paper_dir,
+        )
+    finally:
+        tmp_tex.unlink(missing_ok=True)
+
+
 def rebuild_artifacts(log_path: Path) -> None:
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.run_stat_tests", "--results", "results/main_results.csv"], log_path, allow_fail=True)
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.make_latex_tables", "--results", "results/main_results.csv"], log_path)
@@ -163,16 +212,13 @@ def rebuild_artifacts(log_path: Path) -> None:
     _convert_figures_to_png(log_path)
 
     paper_dir = ROOT / "paper"
-    pandoc_common = [
-        "pandoc", "main.md",
-        "--citeproc",
-        "--bibliography", "references.bib",
-        "--metadata", "link-citations=true",
-    ]
-    # main.md is the single source of truth; .tex / .pdf / .docx are generated.
-    run_cmd(pandoc_common + ["-o", "main.tex"], log_path, allow_fail=True, cwd=paper_dir)
-    run_cmd(pandoc_common + ["-o", "main.pdf"], log_path, allow_fail=True, cwd=paper_dir)
-    run_cmd(pandoc_common + ["-o", "main.docx"], log_path, allow_fail=True, cwd=paper_dir)
+    # Flat single-column English (main.md is the source of truth).
+    _build_md_paper(paper_dir, "main", log_path, lang="en")
+    # Flat single-column Russian.
+    _build_md_paper(paper_dir, "main_ru", log_path, lang="ru")
+    # IEEE conference two-column versions (compiled directly from .tex).
+    _build_ieee_paper(paper_dir, "main_ieee", log_path)
+    _build_ieee_paper(paper_dir, "main_ieee_ru", log_path)
 
 
 def main() -> None:
