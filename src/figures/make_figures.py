@@ -96,80 +96,102 @@ def write_figure(fig: go.Figure, path: Path) -> None:
 def save_methodology(path: Path) -> None:
     fig = go.Figure()
     steps = [
-        ("Public data", "ECL aggregate load<br>ETTh1/HUFL"),
-        ("Leakage-safe setup", "Chronological split<br>Train-only scaling"),
-        ("Model families", "Baseline, SARIMA, ML<br>DL and foundation"),
-        ("Evaluation", "MAE, RMSE, sMAPE, wMAPE<br>Latency, memory, DM tests"),
-        ("Deliverables", "CSV results<br>Figures, PDF, Word"),
+        ("Data", "ECL aggregate load; ETTh1/HUFL"),
+        ("Protocol", "Chronological split; train-only scaling"),
+        ("Models", "Seasonal/ARIMA, XGBoost, DL, foundation"),
+        ("Metrics", "MAE, RMSE, sMAPE, wMAPE; latency"),
+        ("Outputs", "Tables, statistical tests, figures, DOCX"),
     ]
-    ys = np.linspace(0.84, 0.14, len(steps))
-    x = 0.5
+    ys = np.linspace(0.88, 0.16, len(steps))
     for i, (y, (title, body)) in enumerate(zip(ys, steps)):
         fig.add_shape(
             type="rect",
             xref="paper",
             yref="paper",
-            x0=0.12,
-            x1=0.88,
-            y0=y - 0.065,
-            y1=y + 0.065,
-            line={"color": "#CBD5E1", "width": 1.2},
-            fillcolor="#F8FAFC",
+            x0=0.085,
+            x1=0.915,
+            y0=y - 0.058,
+            y1=y + 0.058,
+            line={"color": "#CBD5E1", "width": 1.25},
+            fillcolor="#F9FAFB",
+            layer="below",
+        )
+        fig.add_shape(
+            type="circle",
+            xref="paper",
+            yref="paper",
+            x0=0.115,
+            x1=0.175,
+            y0=y - 0.030,
+            y1=y + 0.030,
+            line={"color": "#1D4ED8", "width": 1},
+            fillcolor="#2563EB",
             layer="below",
         )
         fig.add_annotation(
-            x=0.29,
-            y=y + 0.024,
+            x=0.145,
+            y=y,
+            xref="paper",
+            yref="paper",
+            text=str(i + 1),
+            showarrow=False,
+            font={"size": 15, "color": "white"},
+            align="center",
+        )
+        fig.add_annotation(
+            x=0.235,
+            y=y + 0.018,
             xref="paper",
             yref="paper",
             text=f"<b>{title}</b>",
             showarrow=False,
-            font={"size": 15, "color": "#0F172A"},
+            font={"size": 14, "color": "#0F172A"},
             align="left",
+            xanchor="left",
         )
         fig.add_annotation(
-            x=0.66,
-            y=y,
+            x=0.235,
+            y=y - 0.020,
             xref="paper",
             yref="paper",
             text=body,
             showarrow=False,
-            font={"size": 13, "color": "#334155"},
+            font={"size": 12.5, "color": "#334155"},
             align="left",
+            xanchor="left",
         )
         if i < len(steps) - 1:
             fig.add_shape(
                 type="line",
                 xref="paper",
                 yref="paper",
-                x0=0.5,
-                x1=0.5,
-                y0=y - 0.07,
-                y1=ys[i + 1] + 0.08,
-                line={"color": "#64748B", "width": 1.6},
+                x0=0.145,
+                x1=0.145,
+                y0=y - 0.063,
+                y1=ys[i + 1] + 0.063,
+                line={"color": "#94A3B8", "width": 1.4},
             )
             fig.add_annotation(
-                x=0.5,
-                y=ys[i + 1] + 0.08,
+                x=0.145,
+                y=ys[i + 1] + 0.063,
                 xref="paper",
                 yref="paper",
                 text="",
                 showarrow=True,
                 arrowhead=3,
-                arrowsize=1.2,
-                arrowwidth=1.6,
-                arrowcolor="#64748B",
+                arrowsize=1.0,
+                arrowwidth=1.4,
+                arrowcolor="#94A3B8",
                 ax=0,
-                ay=-22,
+                ay=-20,
             )
     fig.update_layout(**FIG_LAYOUT)
     fig.update_layout(
         width=760,
-        height=900,
-        title_text="Experimental Pipeline",
+        height=760,
         xaxis={"visible": False},
         yaxis={"visible": False},
-        margin={"l": 24, "r": 24, "t": 78, "b": 24},
+        margin={"l": 12, "r": 12, "t": 12, "b": 12},
     )
     write_figure(fig, path)
 
