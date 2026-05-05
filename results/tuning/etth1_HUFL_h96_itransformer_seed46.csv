@@ -1,0 +1,3 @@
+learning_rate,val_MAE,elapsed_s,model,dataset,target,horizon,seed,selected_learning_rate
+0.001,3.587598521274337,6.834808782001346,itransformer,etth1,HUFL,96,46,0.0005
+0.0005,3.336775879757614,6.456698982001399,itransformer,etth1,HUFL,96,46,0.0005

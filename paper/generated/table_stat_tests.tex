@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Diebold--Mariano tests for top-2 models by MAE at seed 42.}
+\label{tab:stat_tests}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Data/H & Comparison & Statistic & p-value & Sig. \\
+\midrule
+ecl/H24 & timesfm vs xgboost & 13.45 & <0.001 & True \\
+ecl/H96 & xgboost vs chronos\_bolt\_small & -38.15 & <0.001 & True \\
+ecl/H168 & xgboost vs chronos\_bolt\_small & -2.88 & 0.004 & True \\
+etth1/H24 & chronos\_bolt\_small vs patchtst & -3.39 & <0.001 & True \\
+etth1/H96 & dlinear vs chronos\_bolt\_small & -2.48 & 0.013 & True \\
+etth1/H168 & dlinear vs chronos\_bolt\_small & -8.81 & <0.001 & True \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

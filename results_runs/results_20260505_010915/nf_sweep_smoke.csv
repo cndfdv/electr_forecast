@@ -1,0 +1,2 @@
+model,dataset,target,horizon,seed,MAE,RMSE,sMAPE,wMAPE,MSE,train_time_s,inference_ms,n_params,peak_gpu_mb
+dlinear,synthetic,synthetic_load,24,42,5.2818560986669,6.573139747787874,5.09290503084963,5.068229366469169,43.20616614394883,0.5248038129975612,45.232454998767935,16176,0.0

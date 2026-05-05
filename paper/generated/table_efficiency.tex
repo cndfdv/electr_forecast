@@ -1,0 +1,55 @@
+\begin{table}[t]
+\centering
+\caption{Computational efficiency.}
+\label{tab:efficiency}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrr}
+\toprule
+Model & Data/H & Train s & Infer ms & Params & GPU MB \\
+\midrule
+chronos\_bolt\_small & ecl/H24 & 0.000 & 15.6205 & 47718016 & 123.3 \\
+dlinear & ecl/H24 & 11.795 & 55.8597 & 16176 & 26.3 \\
+itransformer & ecl/H24 & 23.725 & 55.3372 & 311448 & 164.9 \\
+patchtst & ecl/H24 & 43.077 & 55.7089 & 168280 & 608.6 \\
+seasonal\_naive & ecl/H24 & 0.000 & 0.0041 & 0 & 0.0 \\
+timesfm & ecl/H24 & 0.000 & 102.2329 & 200000000 & 895.6 \\
+xgboost & ecl/H24 & 2.892 & 7.5029 & 57388 & 0.0 \\
+chronos\_bolt\_small & ecl/H96 & 0.000 & 39.6397 & 47718016 & 345.8 \\
+dlinear & ecl/H96 & 18.843 & 59.4035 & 64704 & 29.8 \\
+itransformer & ecl/H96 & 31.380 & 66.2948 & 320736 & 165.0 \\
+patchtst & ecl/H96 & 49.984 & 62.4020 & 361888 & 612.4 \\
+seasonal\_naive & ecl/H96 & 0.000 & 0.0048 & 0 & 0.0 \\
+timesfm & ecl/H96 & 0.000 & 91.9861 & 200000000 & 895.6 \\
+xgboost & ecl/H96 & 10.485 & 25.0947 & 229423 & 0.0 \\
+chronos\_bolt\_small & ecl/H168 & 0.000 & 45.2988 & 47718016 & 381.4 \\
+dlinear & ecl/H168 & 25.996 & 64.1642 & 113232 & 32.7 \\
+itransformer & ecl/H168 & 38.540 & 69.7238 & 330024 & 165.2 \\
+patchtst & ecl/H168 & 56.942 & 75.2900 & 555496 & 617.3 \\
+seasonal\_naive & ecl/H168 & 0.000 & 0.0058 & 0 & 0.0 \\
+timesfm & ecl/H168 & 0.000 & 200.3501 & 200000000 & 896.4 \\
+xgboost & ecl/H168 & 18.179 & 42.7073 & 401454 & 0.0 \\
+chronos\_bolt\_small & etth1/H24 & 0.000 & 13.4838 & 47718016 & 123.3 \\
+dlinear & etth1/H24 & 10.701 & 39.9808 & 16176 & 26.2 \\
+itransformer & etth1/H24 & 20.171 & 39.1519 & 311448 & 164.8 \\
+patchtst & etth1/H24 & 39.820 & 39.1007 & 168280 & 608.3 \\
+seasonal\_naive & etth1/H24 & 0.000 & 0.0037 & 0 & 0.0 \\
+timesfm & etth1/H24 & 0.000 & 98.1902 & 200000000 & 895.6 \\
+xgboost & etth1/H24 & 2.340 & 6.1449 & 57417 & 0.0 \\
+chronos\_bolt\_small & etth1/H96 & 0.000 & 36.2363 & 47718016 & 345.8 \\
+dlinear & etth1/H96 & 9.899 & 39.2943 & 64704 & 29.8 \\
+itransformer & etth1/H96 & 20.615 & 38.8574 & 320736 & 165.0 \\
+patchtst & etth1/H96 & 38.598 & 39.9531 & 361888 & 612.6 \\
+seasonal\_naive & etth1/H96 & 0.000 & 0.0052 & 0 & 0.0 \\
+timesfm & etth1/H96 & 0.000 & 109.7588 & 200000000 & 895.6 \\
+xgboost & etth1/H96 & 8.638 & 24.4694 & 229758 & 0.0 \\
+chronos\_bolt\_small & etth1/H168 & 0.000 & 64.7316 & 47718016 & 381.4 \\
+dlinear & etth1/H168 & 10.095 & 40.7118 & 113232 & 32.6 \\
+itransformer & etth1/H168 & 21.127 & 44.3775 & 330024 & 165.1 \\
+patchtst & etth1/H168 & 39.072 & 42.3925 & 555496 & 617.0 \\
+seasonal\_naive & etth1/H168 & 0.000 & 0.0053 & 0 & 0.0 \\
+timesfm & etth1/H168 & 0.000 & 208.5066 & 200000000 & 896.4 \\
+xgboost & etth1/H168 & 14.775 & 42.6873 & 401899 & 0.0 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

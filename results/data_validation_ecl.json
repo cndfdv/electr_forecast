@@ -1,0 +1,10 @@
+{
+  "rows": 26304,
+  "duplicate_timestamps": 26182,
+  "missing_y": 0,
+  "zero_y": 0,
+  "near_zero_y": 0,
+  "regular_hourly_grid": false,
+  "start": "1970-01-01 00:00:00",
+  "end": "1970-01-01 00:00:00.000000140"
+}

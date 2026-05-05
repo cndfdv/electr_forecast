@@ -1,0 +1,15 @@
+dataset: etth1
+raw_path: data/raw/ETTh1.csv
+processed_path: data/processed/etth1_hufl.csv
+time_col: date
+target_col: HUFL
+target_policy: load_related_hufl
+freq: H
+split:
+  train_months: 12
+  val_months: 4
+  test_months: 4
+horizons: [24, 96, 168]
+input_length: 336
+seeds: [42, 43, 44, 45, 46]
+

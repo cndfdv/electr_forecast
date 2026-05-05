@@ -1,0 +1,1 @@
+model,dataset,target,horizon,seed,MAE,RMSE,sMAPE,wMAPE,MSE,train_time_s,inference_ms,n_params,peak_gpu_mb

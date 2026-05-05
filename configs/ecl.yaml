@@ -1,0 +1,15 @@
+dataset: ecl
+raw_path: data/raw/electricity.txt
+processed_path: data/processed/ecl_aggregate.csv
+time_col: ds
+target_col: y
+target_policy: aggregate_load
+freq: H
+split:
+  train: 0.70
+  val: 0.10
+  test: 0.20
+horizons: [24, 96, 168]
+input_length: 336
+seeds: [42, 43, 44, 45, 46]
+

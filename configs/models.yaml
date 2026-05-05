@@ -1,0 +1,34 @@
+models:
+  seasonal_naive:
+    enabled: true
+    season_lengths: [24, 168]
+  auto_arima:
+    enabled: true
+    max_p: 3
+    max_q: 3
+    seasonal: true
+    season_length: 24
+  xgboost:
+    enabled: true
+    lags: [1, 24, 168]
+    rolling_windows: [24, 168]
+    max_depth: [3, 5]
+    learning_rate: [0.03, 0.05]
+    n_estimators: [300, 600]
+  dlinear:
+    enabled: true
+    learning_rates: [0.001, 0.0005]
+  patchtst:
+    enabled: true
+    learning_rates: [0.001, 0.0005]
+  itransformer:
+    enabled: true
+    learning_rates: [0.001, 0.0005]
+  chronos_bolt_small:
+    enabled: true
+    checkpoint: amazon/chronos-bolt-small
+  timesfm:
+    enabled: true
+    checkpoint: google/timesfm-2.5-200m-pytorch
+    fallback_checkpoint: google/timesfm-2.0-500m-pytorch
+

@@ -1,0 +1,25 @@
+ds,step,origin,dataset,target,horizon,seed,model,y_true,y_pred
+2020-02-09 23:00:00,1,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,104.34064560090478,104.0
+2020-02-10 00:00:00,2,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,110.6279804884902,108.0
+2020-02-10 01:00:00,3,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,110.99073612948548,111.0
+2020-02-10 02:00:00,4,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,111.70582514656179,114.0
+2020-02-10 03:00:00,5,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,115.11915386534989,116.5
+2020-02-10 04:00:00,6,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,116.82285127801296,118.5
+2020-02-10 05:00:00,7,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,115.8314952424699,119.5
+2020-02-10 06:00:00,8,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,117.8389374642982,119.5
+2020-02-10 07:00:00,9,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,116.7719918066318,118.0
+2020-02-10 08:00:00,10,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,118.27614847179068,116.5
+2020-02-10 09:00:00,11,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,115.35567953473635,115.0
+2020-02-10 10:00:00,12,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,112.8118364012995,113.0
+2020-02-10 11:00:00,13,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,110.66828369354005,110.5
+2020-02-10 12:00:00,14,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,108.57738527948581,108.5
+2020-02-10 13:00:00,15,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,106.58306921381387,105.5
+2020-02-10 14:00:00,16,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,101.7498061357282,103.0
+2020-02-10 15:00:00,17,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,99.61926133136275,101.0
+2020-02-10 16:00:00,18,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,101.2528114908474,99.5
+2020-02-10 17:00:00,19,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,97.98161924781806,98.5
+2020-02-10 18:00:00,20,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,96.1374557935484,98.5
+2020-02-10 19:00:00,21,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,99.27251584705552,98.5
+2020-02-10 20:00:00,22,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,100.30419183050407,99.5
+2020-02-10 21:00:00,23,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,98.90558657497674,102.0
+2020-02-10 22:00:00,24,2020-02-09 23:00:00,synthetic,synthetic_load,24,42,chronos_bolt_small,103.62028595935054,104.0

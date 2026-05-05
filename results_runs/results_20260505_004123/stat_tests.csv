@@ -1,0 +1,7 @@
+dataset,target,horizon,metric,model_a,model_b,test_name,statistic,p_value,significant
+ecl,aggregate_load,24,MAE,timesfm,xgboost,diebold_mariano,13.448332749881704,0.0,True
+ecl,aggregate_load,96,MAE,xgboost,chronos_bolt_small,diebold_mariano,-38.14674861322155,0.0,True
+ecl,aggregate_load,168,MAE,xgboost,chronos_bolt_small,diebold_mariano,-2.8846359208727286,0.0039186655794332115,True
+etth1,HUFL,24,MAE,chronos_bolt_small,dlinear,diebold_mariano,-8.375047203868714,0.0,True
+etth1,HUFL,96,MAE,dlinear,chronos_bolt_small,diebold_mariano,-2.483675932466422,0.013003408393367888,True
+etth1,HUFL,168,MAE,dlinear,chronos_bolt_small,diebold_mariano,-8.810746924196406,0.0,True
