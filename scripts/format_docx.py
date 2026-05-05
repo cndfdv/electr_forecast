@@ -268,6 +268,96 @@ REPLACEMENTS: dict[str, str] = {
 }
 
 
+INSERT_AFTER: dict[str, list[str]] = {
+    "Recent time-series foundation models introduce forecasting without task-specific training": [
+        (
+            "For STLF specifically, this background implies that a useful comparison must include "
+            "both domain-standard baselines and recent general-purpose models. A benchmark that "
+            "contains only neural or foundation models risks overstating novelty, while a "
+            "benchmark that excludes pretrained models misses a deployment pattern that is now "
+            "common in industrial prototyping. Therefore, the present study evaluates classical "
+            "seasonal methods, gradient boosting, compact neural architectures, and zero-shot "
+            "foundation models within a single execution pipeline."
+        ),
+        (
+            "The long-sequence forecasting literature also motivates the inclusion of simple "
+            "neural baselines. Linear and decomposition-based models have repeatedly shown that "
+            "strong temporal biases can match or outperform more complex attention mechanisms on "
+            "standard benchmarks [15]. Patch-based transformers and inverted-tokenization "
+            "architectures address different weaknesses of vanilla sequence attention [16], [18], "
+            "but their advantage is not guaranteed under a target-only STLF protocol. This makes "
+            "DLinear, PatchTST, and iTransformer a useful compact neural set rather than an "
+            "arbitrary model list."
+        ),
+    ],
+    "Accuracy is measured with mean absolute error (MAE), root mean squared error": [
+        (
+            "The comparison protocol is intentionally leakage-safe. Dataset statistics used for "
+            "standardization are estimated only on the training split, validation choices are made "
+            "without access to the test segment, and each test forecast uses only observations "
+            "available before its forecast origin. Prophet-like or tree-based feature engineering "
+            "is also restricted to lag and calendar information that would be known at prediction "
+            "time. This is essential because small leakage errors can dominate benchmark rankings "
+            "on public time-series datasets."
+        ),
+        (
+            "Efficiency is treated as part of the method rather than as an afterthought. Training "
+            "time captures the cost of adapting a model to a new site, while single-window "
+            "latency captures the cost of producing one operational forecast after deployment. "
+            "These two quantities answer different engineering questions: a zero-shot model may "
+            "avoid training entirely but still be expensive at inference, whereas a supervised "
+            "model may require fitting once and then produce forecasts cheaply."
+        ),
+    ],
+    "The trained transformer models should not be interpreted as generally ineffective": [
+        (
+            "From a deployment perspective, the results suggest a tiered model-selection strategy. "
+            "SeasonalNaive and SARIMA are useful first checks because they reveal whether the "
+            "series is dominated by regular seasonality. XGBoost is an appropriate default when "
+            "sufficient site history is available and feature engineering is acceptable. DLinear "
+            "is a lightweight neural alternative for horizons where linear temporal structure is "
+            "dominant. Foundation models are most attractive when training data are scarce, "
+            "experiments must be started quickly, or the cost of maintaining site-specific models "
+            "is high."
+        ),
+        (
+            "The accuracy-latency results also caution against interpreting model quality through "
+            "a single metric. A model that is marginally more accurate but substantially slower "
+            "may be unattractive in an online monitoring system, while a slower zero-shot model "
+            "may still be useful if it eliminates training and tuning for many small assets. "
+            "Consequently, the benchmark is best read as a Pareto comparison across accuracy, "
+            "latency, and adaptation cost rather than as a strict ranking."
+        ),
+    ],
+    "The third limitation is the restricted hyperparameter budget": [
+        (
+            "A further limitation is that the study reports deterministic point forecasts. Many "
+            "operational grid and industrial planning tasks require prediction intervals or full "
+            "probabilistic forecasts to support reserve allocation and risk-aware scheduling. "
+            "Extending the protocol to quantile losses, calibration metrics, and probabilistic "
+            "foundation models would make the comparison more directly applicable to reliability-"
+            "constrained decision making."
+        ),
+        (
+            "Finally, the benchmark uses two public hourly datasets. This choice supports "
+            "reproducibility and allows other researchers to verify the reported results, but it "
+            "does not cover all STLF regimes. Future work should repeat the protocol on private "
+            "industrial sites, weather-sensitive residential feeders, and datasets with known "
+            "calendar events. Such studies would clarify whether the relative strength of "
+            "XGBoost, DLinear, and foundation models transfers beyond standard public benchmarks."
+        ),
+    ],
+}
+
+
+def _insert_after(paragraph, text: str):
+    new_paragraph = paragraph.insert_paragraph_before(text)
+    paragraph._p.addnext(new_paragraph._p)
+    new_paragraph.style = paragraph.style
+    new_paragraph.alignment = paragraph.alignment
+    return new_paragraph
+
+
 def _set_no_proof(paragraph) -> None:
     """Disable Word spell/grammar marking for a paragraph while preserving style."""
     for run in paragraph.runs:
@@ -295,6 +385,19 @@ def polish_docx(path: Path) -> tuple[int, int]:
                 break
         _set_no_proof(paragraph)
 
+    inserted = 0
+    for prefix, paragraphs_to_insert in INSERT_AFTER.items():
+        anchor = next((paragraph for paragraph in doc.paragraphs if paragraph.text.strip().startswith(prefix)), None)
+        if anchor is None:
+            continue
+        cursor = anchor
+        for text in paragraphs_to_insert:
+            if any(paragraph.text.strip() == text for paragraph in doc.paragraphs):
+                continue
+            cursor = _insert_after(cursor, text)
+            _set_no_proof(cursor)
+            inserted += 1
+
     # Also mark table text as no-proof; tables themselves are not regenerated.
     table_runs = 0
     for table in doc.tables:
@@ -305,7 +408,7 @@ def polish_docx(path: Path) -> tuple[int, int]:
                     table_runs += len(paragraph.runs)
 
     doc.save(path)
-    return replaced, table_runs
+    return replaced + inserted, table_runs
 
 
 def main() -> None:

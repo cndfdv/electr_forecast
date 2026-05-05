@@ -90,7 +90,8 @@ def apply_axes_style(fig: go.Figure) -> None:
 
 def write_figure(fig: go.Figure, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig.write_image(path, scale=2)
+    scale = 4 if path.suffix.lower() == ".png" else 1
+    fig.write_image(path, scale=scale)
 
 
 def save_methodology(path: Path) -> None:
@@ -102,16 +103,16 @@ def save_methodology(path: Path) -> None:
         ("Metrics", "MAE, RMSE, sMAPE, wMAPE; latency"),
         ("Outputs", "Tables, statistical tests, figures, DOCX"),
     ]
-    ys = np.linspace(0.88, 0.16, len(steps))
+    ys = np.linspace(0.86, 0.18, len(steps))
     for i, (y, (title, body)) in enumerate(zip(ys, steps)):
         fig.add_shape(
             type="rect",
             xref="paper",
             yref="paper",
-            x0=0.085,
-            x1=0.915,
-            y0=y - 0.058,
-            y1=y + 0.058,
+            x0=0.08,
+            x1=0.92,
+            y0=y - 0.064,
+            y1=y + 0.064,
             line={"color": "#CBD5E1", "width": 1.25},
             fillcolor="#F9FAFB",
             layer="below",
@@ -120,60 +121,64 @@ def save_methodology(path: Path) -> None:
             type="circle",
             xref="paper",
             yref="paper",
-            x0=0.115,
-            x1=0.175,
-            y0=y - 0.030,
-            y1=y + 0.030,
+            x0=0.110,
+            x1=0.178,
+            y0=y - 0.034,
+            y1=y + 0.034,
             line={"color": "#1D4ED8", "width": 1},
             fillcolor="#2563EB",
             layer="below",
         )
         fig.add_annotation(
-            x=0.145,
+            x=0.144,
             y=y,
             xref="paper",
             yref="paper",
             text=str(i + 1),
             showarrow=False,
-            font={"size": 15, "color": "white"},
+            font={"size": 16, "color": "white"},
             align="center",
+            xanchor="center",
+            yanchor="middle",
         )
         fig.add_annotation(
-            x=0.235,
-            y=y + 0.018,
+            x=0.55,
+            y=y + 0.020,
             xref="paper",
             yref="paper",
             text=f"<b>{title}</b>",
             showarrow=False,
             font={"size": 14, "color": "#0F172A"},
-            align="left",
-            xanchor="left",
+            align="center",
+            xanchor="center",
+            yanchor="middle",
         )
         fig.add_annotation(
-            x=0.235,
-            y=y - 0.020,
+            x=0.55,
+            y=y - 0.022,
             xref="paper",
             yref="paper",
             text=body,
             showarrow=False,
             font={"size": 12.5, "color": "#334155"},
-            align="left",
-            xanchor="left",
+            align="center",
+            xanchor="center",
+            yanchor="middle",
         )
         if i < len(steps) - 1:
             fig.add_shape(
                 type="line",
                 xref="paper",
                 yref="paper",
-                x0=0.145,
-                x1=0.145,
-                y0=y - 0.063,
-                y1=ys[i + 1] + 0.063,
+                x0=0.144,
+                x1=0.144,
+                y0=y - 0.070,
+                y1=ys[i + 1] + 0.070,
                 line={"color": "#94A3B8", "width": 1.4},
             )
             fig.add_annotation(
-                x=0.145,
-                y=ys[i + 1] + 0.063,
+                x=0.144,
+                y=ys[i + 1] + 0.070,
                 xref="paper",
                 yref="paper",
                 text="",
@@ -188,7 +193,7 @@ def save_methodology(path: Path) -> None:
     fig.update_layout(**FIG_LAYOUT)
     fig.update_layout(
         width=760,
-        height=760,
+        height=720,
         xaxis={"visible": False},
         yaxis={"visible": False},
         margin={"l": 12, "r": 12, "t": 12, "b": 12},
