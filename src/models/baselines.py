@@ -84,7 +84,9 @@ class FixedSARIMAForecaster:
     def _make_model(self):
         from statsforecast.models import ARIMA
 
-        return ARIMA(order=self.order, seasonal_order=self.seasonal_order)
+        seasonal_order = self.seasonal_order[:3]
+        season_length = self.seasonal_order[3]
+        return ARIMA(order=self.order, seasonal_order=seasonal_order, season_length=season_length)
 
     def fit(self, y_train: np.ndarray) -> "FixedSARIMAForecaster":
         try:

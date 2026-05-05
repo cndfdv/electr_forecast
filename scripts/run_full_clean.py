@@ -18,8 +18,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LIGHT_PY = Path("/home/knyze/miniforge3/envs/electr-forecast/bin/python")
-FOUNDATION_PY = Path("/home/knyze/miniforge3/envs/electr-forecast-foundation/bin/python")
+LIGHT_PY = Path(os.environ.get("ELECTR_FORECAST_PYTHON", sys.executable))
+FOUNDATION_PY = Path(
+    os.environ.get(
+        "ELECTR_FORECAST_FOUNDATION_PYTHON",
+        str(LIGHT_PY.parent.parent.parent / "electr-forecast-foundation" / "bin" / "python"),
+    )
+)
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
