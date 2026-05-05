@@ -8,6 +8,10 @@ models:
     max_q: 3
     seasonal: true
     season_length: 24
+  sarima:
+    enabled: true
+    order: [1, 1, 1]
+    seasonal_order: [1, 1, 1, 24]
   xgboost:
     enabled: true
     lags: [1, 24, 168]

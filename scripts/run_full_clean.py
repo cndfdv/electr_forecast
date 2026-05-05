@@ -124,6 +124,14 @@ def autoarima_jobs(horizons: list[int]) -> list[tuple[list[str], bool]]:
     return jobs
 
 
+def sarima_jobs(horizons: list[int]) -> list[tuple[list[str], bool]]:
+    jobs: list[tuple[list[str], bool]] = []
+    for dataset in ["ecl", "etth1"]:
+        for horizon in horizons:
+            jobs.append(([str(LIGHT_PY), "-m", "src.experiments.run_experiment", "--dataset", dataset, "--model", "sarima", "--horizon", str(horizon), "--seed", "42", "--latency-repeats", "5"], False))
+    return jobs
+
+
 def rebuild_artifacts(log_path: Path) -> None:
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.run_stat_tests", "--results", "results/main_results.csv"], log_path, allow_fail=True)
     run_cmd([str(LIGHT_PY), "-m", "src.evaluation.make_latex_tables", "--results", "results/main_results.csv"], log_path)
@@ -144,6 +152,12 @@ def main() -> None:
     parser.add_argument("--horizons", nargs="+", type=int, default=[24, 96, 168])
     parser.add_argument("--max-steps", type=int, default=500)
     parser.add_argument("--skip-autoarima", action="store_true")
+    parser.add_argument(
+        "--only-sarima",
+        action="store_true",
+        help="Run only the SARIMA jobs and append to existing results/main_results.csv "
+             "(skips backup, header rewrite, other models, and artifact rebuild).",
+    )
     args = parser.parse_args()
 
     os.chdir(ROOT)
@@ -154,15 +168,20 @@ def main() -> None:
     pid_path.write_text(str(os.getpid()) + "\n", encoding="utf-8")
 
     try:
-        log("starting full clean benchmark", log_path)
-        backup_results(log_path)
-        ensure_header(ROOT / "results" / "main_results.csv")
+        if args.only_sarima:
+            log("starting SARIMA-only run (append mode)", log_path)
+            jobs = sarima_jobs(args.horizons)
+        else:
+            log("starting full clean benchmark", log_path)
+            backup_results(log_path)
+            ensure_header(ROOT / "results" / "main_results.csv")
 
-        jobs = classical_jobs(args.seeds, args.horizons)
-        jobs += neural_jobs(args.seeds, args.horizons, args.max_steps)
-        jobs += foundation_jobs(args.horizons)
-        if not args.skip_autoarima:
-            jobs += autoarima_jobs(args.horizons)
+            jobs = classical_jobs(args.seeds, args.horizons)
+            jobs += neural_jobs(args.seeds, args.horizons, args.max_steps)
+            jobs += foundation_jobs(args.horizons)
+            jobs += sarima_jobs(args.horizons)
+            if not args.skip_autoarima:
+                jobs += autoarima_jobs(args.horizons)
 
         failures: list[str] = []
         for idx, (cmd, allow_fail) in enumerate(jobs, start=1):
@@ -171,12 +190,13 @@ def main() -> None:
             if code != 0:
                 failures.append(" ".join(cmd))
 
-        rebuild_artifacts(log_path)
+        if not args.only_sarima:
+            rebuild_artifacts(log_path)
         if failures:
             log("non-fatal failures:", log_path)
             for item in failures:
                 log(item, log_path)
-        log("finished full clean benchmark", log_path)
+        log("finished run", log_path)
     except Exception as exc:
         log(f"fatal error: {exc!r}", log_path)
         raise

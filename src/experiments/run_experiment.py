@@ -26,7 +26,7 @@ from src.data.windows import append_context, make_forecast_origins, make_windows
 from src.evaluation.metrics import compute_metrics
 from src.evaluation.metrics import per_window_absolute_error
 from src.evaluation.timing import get_peak_gpu_mb, measure_time
-from src.models.baselines import AutoARIMAForecaster, SeasonalNaiveForecaster
+from src.models.baselines import AutoARIMAForecaster, FixedSARIMAForecaster, SeasonalNaiveForecaster
 
 
 RESULT_COLUMNS = [
@@ -82,6 +82,9 @@ def build_prediction(
             model = SeasonalNaiveForecaster(season_length=24).fit(train_df["y"].to_numpy())
         elif model_name == "auto_arima":
             model = AutoARIMAForecaster(season_length=24, seasonal=True, max_p=3, max_q=3)
+        elif model_name == "sarima":
+            model = FixedSARIMAForecaster(order=(1, 1, 1), seasonal_order=(1, 1, 1, 24))
+            model.fit(train_df["y"].to_numpy())
         elif model_name == "xgboost":
             from src.models.xgboost_model import XGBoostDirectForecaster
 
