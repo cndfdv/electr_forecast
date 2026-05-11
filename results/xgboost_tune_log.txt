@@ -1,0 +1,85 @@
+[tune] ecl/H24 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=24371.56 fit_time=5.6s
+[tune] ecl/H24 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=23957.37 fit_time=5.5s
+[tune] ecl/H24 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=23848.95 fit_time=9.2s
+[tune] ecl/H24 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=23766.06 fit_time=9.3s
+[tune] ecl/H24 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=23426.38 fit_time=8.2s
+[tune] ecl/H24 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=23549.74 fit_time=8.3s
+[tune] ecl/H24 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=23264.91 fit_time=14.7s
+[tune] ecl/H24 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=23523.27 fit_time=14.6s
+[eval] ecl/H24 seed42 MAE=31621.81 sMAPE=3.81 fit_time=15.8s
+[eval] ecl/H24 seed43 MAE=31796.93 sMAPE=3.82 fit_time=15.8s
+[eval] ecl/H24 seed44 MAE=31787.84 sMAPE=3.82 fit_time=15.2s
+[eval] ecl/H24 seed45 MAE=31767.97 sMAPE=3.82 fit_time=15.5s
+[eval] ecl/H24 seed46 MAE=31715.80 sMAPE=3.81 fit_time=15.7s
+[done] ecl/H24 in 4.5 min
+[tune] ecl/H96 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=29493.61 fit_time=22.4s
+[tune] ecl/H96 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=29924.37 fit_time=21.9s
+[tune] ecl/H96 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=29827.86 fit_time=38.6s
+[tune] ecl/H96 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=30358.04 fit_time=38.2s
+[tune] ecl/H96 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=30059.00 fit_time=33.5s
+[tune] ecl/H96 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=30674.82 fit_time=32.7s
+[tune] ecl/H96 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=30267.51 fit_time=59.8s
+[tune] ecl/H96 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=30838.69 fit_time=59.2s
+[eval] ecl/H96 seed42 MAE=42400.53 sMAPE=4.86 fit_time=22.9s
+[eval] ecl/H96 seed43 MAE=42532.32 sMAPE=4.87 fit_time=22.7s
+[eval] ecl/H96 seed44 MAE=42596.88 sMAPE=4.88 fit_time=23.8s
+[eval] ecl/H96 seed45 MAE=42556.46 sMAPE=4.88 fit_time=23.6s
+[eval] ecl/H96 seed46 MAE=42582.50 sMAPE=4.88 fit_time=23.7s
+[done] ecl/H96 in 11.0 min
+[tune] ecl/H168 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=32998.89 fit_time=38.7s
+[tune] ecl/H168 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=33803.81 fit_time=38.2s
+[tune] ecl/H168 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=33637.66 fit_time=66.1s
+[tune] ecl/H168 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=34508.57 fit_time=65.9s
+[tune] ecl/H168 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=34236.35 fit_time=57.2s
+[tune] ecl/H168 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=35063.83 fit_time=56.9s
+[tune] ecl/H168 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=34663.38 fit_time=103.8s
+[tune] ecl/H168 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=35337.95 fit_time=103.1s
+[eval] ecl/H168 seed42 MAE=48276.72 sMAPE=5.40 fit_time=40.8s
+[eval] ecl/H168 seed43 MAE=48398.53 sMAPE=5.42 fit_time=40.8s
+[eval] ecl/H168 seed44 MAE=48459.79 sMAPE=5.42 fit_time=42.1s
+[eval] ecl/H168 seed45 MAE=48414.96 sMAPE=5.42 fit_time=41.2s
+[eval] ecl/H168 seed46 MAE=48450.23 sMAPE=5.43 fit_time=42.3s
+[done] ecl/H168 in 19.1 min
+[tune] etth1/H24 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=3.81 fit_time=4.4s
+[tune] etth1/H24 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=3.97 fit_time=4.6s
+[tune] etth1/H24 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=3.91 fit_time=7.6s
+[tune] etth1/H24 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.08 fit_time=7.7s
+[tune] etth1/H24 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=3.92 fit_time=6.7s
+[tune] etth1/H24 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=3.99 fit_time=6.8s
+[tune] etth1/H24 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=3.96 fit_time=12.3s
+[tune] etth1/H24 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.01 fit_time=12.8s
+[eval] etth1/H24 seed42 MAE=3.72 sMAPE=55.56 fit_time=4.7s
+[eval] etth1/H24 seed43 MAE=3.73 sMAPE=55.59 fit_time=4.8s
+[eval] etth1/H24 seed44 MAE=3.73 sMAPE=55.59 fit_time=4.9s
+[eval] etth1/H24 seed45 MAE=3.72 sMAPE=55.47 fit_time=5.0s
+[eval] etth1/H24 seed46 MAE=3.72 sMAPE=55.60 fit_time=4.9s
+[done] etth1/H24 in 2.4 min
+[tune] etth1/H96 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=4.22 fit_time=18.1s
+[tune] etth1/H96 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=4.38 fit_time=18.1s
+[tune] etth1/H96 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=4.34 fit_time=30.0s
+[tune] etth1/H96 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.49 fit_time=30.4s
+[tune] etth1/H96 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=4.27 fit_time=27.3s
+[tune] etth1/H96 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=4.38 fit_time=27.9s
+[tune] etth1/H96 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=4.32 fit_time=50.0s
+[tune] etth1/H96 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.40 fit_time=51.1s
+[eval] etth1/H96 seed42 MAE=4.07 sMAPE=59.74 fit_time=19.7s
+[eval] etth1/H96 seed43 MAE=4.07 sMAPE=59.70 fit_time=19.3s
+[eval] etth1/H96 seed44 MAE=4.07 sMAPE=59.74 fit_time=19.5s
+[eval] etth1/H96 seed45 MAE=4.06 sMAPE=59.63 fit_time=19.8s
+[eval] etth1/H96 seed46 MAE=4.07 sMAPE=59.77 fit_time=20.2s
+[done] etth1/H96 in 9.6 min
+[tune] etth1/H168 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=4.38 fit_time=31.4s
+[tune] etth1/H168 {'max_depth': 4, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=4.53 fit_time=31.3s
+[tune] etth1/H168 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=4.49 fit_time=52.0s
+[tune] etth1/H168 {'max_depth': 4, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.63 fit_time=53.0s
+[tune] etth1/H168 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.05} val_MAE=4.42 fit_time=48.7s
+[tune] etth1/H168 {'max_depth': 6, 'n_estimators': 500, 'learning_rate': 0.1} val_MAE=4.51 fit_time=50.2s
+[tune] etth1/H168 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.05} val_MAE=4.46 fit_time=89.2s
+[tune] etth1/H168 {'max_depth': 6, 'n_estimators': 1000, 'learning_rate': 0.1} val_MAE=4.54 fit_time=89.9s
+[eval] etth1/H168 seed42 MAE=4.17 sMAPE=60.40 fit_time=34.9s
+[eval] etth1/H168 seed43 MAE=4.17 sMAPE=60.42 fit_time=35.1s
+[eval] etth1/H168 seed44 MAE=4.18 sMAPE=60.46 fit_time=34.5s
+[eval] etth1/H168 seed45 MAE=4.16 sMAPE=60.31 fit_time=33.9s
+[eval] etth1/H168 seed46 MAE=4.18 sMAPE=60.48 fit_time=34.5s
+[done] etth1/H168 in 17.0 min
+DONE total 63.7 min
