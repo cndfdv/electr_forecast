@@ -33,8 +33,12 @@ results/*
 results_runs/
 paper/main_scopus.before_*.docx
 paper/main_scopus_ru.docx
+paper/generated/
+paper/main_ieee.*
+paper/IEEEtran.*
 article_example*.docx
 TODO.md
+scripts/
 
 # OS / editor noise
 .DS_Store

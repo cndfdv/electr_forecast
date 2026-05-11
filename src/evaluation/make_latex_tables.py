@@ -90,8 +90,8 @@ def efficiency_table(df: pd.DataFrame, output: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--results", type=Path, default=Path("results/main_results.csv"))
-    parser.add_argument("--output-dir", type=Path, default=Path("paper/generated"))
+    parser.add_argument("--results", type=Path, default=Path("results/main_results_final.csv"))
+    parser.add_argument("--output-dir", type=Path, default=Path("results/tables"))
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(args.results)

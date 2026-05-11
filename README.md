@@ -1,12 +1,12 @@
-# Electricity Load Forecasting Benchmark
+# Short-Term Electricity Load Forecasting Benchmark
 
-Reproducible benchmark for short-term electricity load forecasting with classical, ML, deep learning, and time-series foundation models.
+This repository contains a reproducible benchmark for short-term electricity
+load forecasting with classical statistical models, gradient-boosted trees,
+neural forecasting models, and time-series foundation models.
 
-Primary dataset:
-- ECL aggregate load.
-
-Secondary benchmark:
-- ETTh1 with an explicitly selected load-related target such as `HUFL`, or `OT` only under the broader transformer condition / oil-temperature forecasting framing.
+The primary dataset is ECL aggregate load. ETTh1/HUFL is used as a secondary
+industrial time-series benchmark. The ETTh1 `OT` column is not used as an
+electricity-load target because it represents transformer oil temperature.
 
 ## Quick Start
 
@@ -16,12 +16,12 @@ mamba activate electr-forecast
 python -m src.experiments.run_experiment --dataset synthetic --model seasonal_naive --horizon 24 --seed 42 --smoke
 ```
 
-The default environment is intentionally light and supports data processing,
-SeasonalNaive, AutoARIMA/StatsForecast, XGBoost, metrics, and figures. GPU and
-foundation-model dependencies are isolated in `environment_foundation.yml`
-because PyTorch/CUDA downloads are large and can be brittle.
+The default environment supports data processing, classical baselines, XGBoost,
+metrics, statistical tests, and figure generation. GPU and foundation-model
+dependencies are isolated in `environment_foundation.yml` because PyTorch/CUDA
+and pretrained forecasting packages are substantially heavier.
 
-Run the currently lightweight real-data baseline:
+Run a small real-data baseline:
 
 ```bash
 python -m src.experiments.run_all --datasets ecl etth1 --models seasonal_naive --horizons 24 96 168 --seeds 42
@@ -29,9 +29,17 @@ python -m src.figures.make_figures --results results/main_results.csv --output-d
 python -m src.evaluation.run_stat_tests --results results/main_results.csv --output results/stat_tests.csv
 ```
 
-After installing the heavy dependencies, extend `--models` to `xgboost`, `auto_arima`, `chronos`, `timesfm`, and the NeuralForecast models. The neural wrappers are present, but full neural training should be run deliberately because it is GPU- and time-intensive.
+After installing the foundation environment, extend `--models` to `xgboost`,
+`auto_arima`, `chronos_bolt_small`, `timesfm`, `dlinear`, `patchtst`, and
+`itransformer`. Full neural and foundation-model runs are GPU-intensive and
+should be launched deliberately.
 
-Full experiments are configured through `configs/*.yaml`. Heavy model families are optional at import time, but require the relevant packages from `environment.yml`.
+The final reported result tables are stored in:
+
+- `results/main_results_final.csv`
+- `results/stat_tests_final.csv`
+
+The final manuscript is `paper/main_scopus.docx`.
 
 ## Repository Layout
 
@@ -43,9 +51,9 @@ src/models/     Baselines, XGBoost, NeuralForecast model helpers
 src/evaluation/ Metrics, timing, statistical tests
 src/experiments Experiment CLIs
 src/figures/    Figure generation
-results/        CSV outputs
-figures/        PDF figures
-paper/          IEEE paper sources
+results/        Final CSV result tables
+figures/        Publication figures
+paper/          Final manuscript and embedded figure assets
 ```
 
 ## Reproducibility Rules
@@ -54,4 +62,4 @@ paper/          IEEE paper sources
 - Preprocessing is fitted only on the permitted training split.
 - Public-dataset pretraining contamination for foundation models is treated as a limitation.
 - ETTh1 `OT` is not reported as electricity load.
-- Missing numerical results must remain `NA`/TODO, never fabricated.
+- Missing numerical results must remain explicitly marked, never fabricated.
