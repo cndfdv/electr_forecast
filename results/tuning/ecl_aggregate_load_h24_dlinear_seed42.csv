@@ -1,3 +1,0 @@
-learning_rate,val_MAE,elapsed_s,model,dataset,target,horizon,seed,selected_learning_rate
-0.001,17489.215687490527,14.071451598999943,dlinear,ecl,aggregate_load,24,42,0.001
-0.0005,18066.411083581115,8.79973672899996,dlinear,ecl,aggregate_load,24,42,0.001

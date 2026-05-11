@@ -4,6 +4,9 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .ipynb_checkpoints/
+.claude/
+.codex/
+.agents/
 
 data/raw/*
 data/processed/*
@@ -18,8 +21,22 @@ data/processed/*
 
 # Training/runtime artifacts (regenerated on every run)
 lightning_logs/
-logs/*.pid
+logs/
+
+# Keep the public repository focused on source code, final tables, and final paper artifacts.
+results/*
+!results/
+!results/main_results_final.csv
+!results/stat_tests_final.csv
+!results/data_validation_ecl.json
+!results/data_validation_etth1.json
+results_runs/
+paper/main_scopus.before_*.docx
+paper/main_scopus_ru.docx
+article_example*.docx
+TODO.md
 
 # OS / editor noise
 .DS_Store
 ~$*
+*.Zone.Identifier

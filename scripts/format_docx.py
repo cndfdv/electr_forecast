@@ -25,6 +25,97 @@ DEFAULT_DOCX = ROOT / "paper" / "main_scopus.docx"
 
 
 REPLACEMENTS: dict[str, str] = {
+    "The contributions of this paper are as follows:": (
+        "The contributions of this paper are as follows: (i) a reproducible "
+        "side-by-side benchmark of two recent time-series foundation models "
+        "(TimesFM 2.5 and Chronos-Bolt-Small) against a grid-tuned SARIMA, "
+        "gradient-boosted trees, and three modern neural baselines under a "
+        "single STLF protocol; (ii) Diebold-Mariano significance tests on "
+        "seed-averaged per-window absolute errors for the leading model pairs "
+        "at every horizon; (iii) an accuracy-latency Pareto analysis that "
+        "quantifies the deployment cost of zero-shot inference relative to "
+        "supervised alternatives; and (iv) the documentation of a "
+        "training-budget effect under which supervised neural models trained "
+        "to convergence outperform zero-shot foundation models by roughly an "
+        "order of magnitude on aggregate ECL load, while on ETTh1/HUFL the "
+        "leading model varies by horizon between Chronos-Bolt at H=24 and "
+        "DLinear at H=96 and H=168."
+    ),
+    "Figure 1. Experimental pipeline used for the benchmark.": (
+        "Figure 1. Experimental pipeline used for the benchmark."
+    ),
+    "Experimental pipeline used for the benchmark.": (
+        "Figure 1. Experimental pipeline used for the benchmark."
+    ),
+    "Sample 168-hour ECL forecast window.": (
+        "Figure 2. Sample 168-hour ECL forecast window."
+    ),
+    "Summary of the main accuracy results.": (
+        "Table I. Summary of the main accuracy results across datasets and "
+        "horizons."
+    ),
+    "Relative MAE by dataset and horizon.": (
+        "Figure 3. Relative MAE by dataset and horizon (each cell shows the "
+        "model's mean MAE divided by the best mean MAE for that "
+        "dataset-horizon)."
+    ),
+    "MAE across forecast horizons on ECL.": (
+        "Figure 4. Mean MAE across forecast horizons on ECL."
+    ),
+    "MAE across forecast horizons on ETTh1/HUFL.": (
+        "Figure 5. Mean MAE across forecast horizons on ETTh1/HUFL."
+    ),
+    "Accuracy-latency view at H=96.": (
+        "Figure 6. Accuracy versus single-window inference latency at H=96 "
+        "for both datasets."
+    ),
+    "Operational interpretation of model families.": (
+        "Table II. Operational interpretation of model families."
+    ),
+    "ECL — accuracy across horizons (mean ± std over seeds where applicable).": (
+        "Table III. ECL accuracy across horizons (mean ± standard deviation "
+        "over five seeds for stochastic models)."
+    ),
+    "ETTh1/HUFL — accuracy across horizons (mean ± std over seeds where applicable).": (
+        "Table IV. ETTh1/HUFL accuracy across horizons (mean ± standard "
+        "deviation over five seeds for stochastic models)."
+    ),
+    "Computational efficiency (single-window inference at batch size 1).": (
+        "Table V. Computational efficiency (single-window inference at batch "
+        "size 1, averaged over seeds)."
+    ),
+    "Diebold-Mariano tests for the top two models by mean MAE, computed on seed-averaged per-window absolute errors.": (
+        "Table VI. Diebold-Mariano tests for the top two models by mean MAE, "
+        "computed on seed-averaged per-window absolute errors."
+    ),
+    "Diebold-Mariano tests for the top two models by MAE at seed 42.": (
+        "Table VI. Diebold-Mariano tests for the top two models by mean MAE, "
+        "computed on seed-averaged per-window absolute errors."
+    ),
+    "Abstract — Short-term electricity load forecasting is a key task": (
+        "Abstract — Short-term electricity load forecasting is a key task for "
+        "smart-grid operation, industrial energy management, and predictive "
+        "planning. This paper presents a reproducible comparative study of "
+        "classical, machine-learning, deep-learning, and foundation-model "
+        "approaches for hourly load forecasting. The benchmark includes "
+        "SeasonalNaive, SARIMA, XGBoost, DLinear, PatchTST, iTransformer, "
+        "Chronos-Bolt-Small, and TimesFM 2.5. The primary dataset is ECL with "
+        "aggregate electricity load as the target; ETTh1/HUFL is used as a "
+        "secondary industrial benchmark. Experiments cover 24-, 96-, and "
+        "168-hour horizons with a 336-hour context window. With a 5000-step "
+        "training budget and validation-driven early stopping, supervised "
+        "neural models dominate ECL aggregate load: iTransformer, DLinear, and "
+        "PatchTST achieve mean MAE roughly an order of magnitude lower than "
+        "Chronos-Bolt-Small, TimesFM 2.5, and a grid-tuned SARIMA at every "
+        "evaluated horizon. On ETTh1/HUFL the ordering is more compressed: "
+        "Chronos-Bolt is best at H=24, while DLinear is best at H=96 and "
+        "H=168, with foundation models within a few percent. Diebold-Mariano "
+        "tests on seed-averaged per-window errors confirm the leader ordering "
+        "is statistically significant. The study also reports training time, "
+        "single-window inference latency, and peak GPU memory, showing that "
+        "foundation models remain attractive cold-start tools but do not "
+        "universally replace properly trained supervised baselines."
+    ),
     "Short-term electricity load forecasting (STLF) supports dispatch planning": (
         "Short-term electricity load forecasting (STLF) supports dispatch "
         "planning, balancing, tariff-aware operation, maintenance planning, "
@@ -189,7 +280,31 @@ REPLACEMENTS: dict[str, str] = {
         "MAE ≈ 260–270k, roughly an order of magnitude higher than the trained "
         "supervised neural models. SeasonalNaive sits another 30% above at "
         "≈ 340k. The gap between trained neural and zero-shot foundation "
-        "models on aggregate ECL load is therefore not a small effect."
+        "models on aggregate ECL load is therefore not a small effect. The "
+        "high sMAPE values for foundation models and SARIMA on ECL (≈ 31%) "
+        "reflect that these models track only the slow baseline of the "
+        "aggregate signal and miss the high-amplitude daily and weekly "
+        "fluctuations of the 321-client sum; the absolute MAE and RMSE values "
+        "are the operationally meaningful comparison for this aggregated "
+        "target."
+    ),
+    "On ECL, the four supervised models trained with a 5000-step budget": (
+        "On ECL, the four supervised models trained with a 5000-step budget — "
+        "iTransformer, DLinear, PatchTST, and XGBoost — separate clearly from "
+        "the foundation models and classical baselines. iTransformer is the "
+        "best model at every horizon, with mean MAE ≈ 26.1k at H=24, 37.5k at "
+        "H=96, and 43.0k at H=168; DLinear is within 4–6% behind at each "
+        "horizon [15], [18]. Chronos-Bolt, TimesFM, and SARIMA cluster at "
+        "MAE ≈ 260–270k, roughly an order of magnitude higher than the trained "
+        "supervised neural models. SeasonalNaive sits another 30% above at "
+        "≈ 340k. The gap between trained neural and zero-shot foundation "
+        "models on aggregate ECL load is therefore not a small effect. The "
+        "high sMAPE values for foundation models and SARIMA on ECL (≈ 31%) "
+        "reflect that these models track only the slow baseline of the "
+        "aggregate signal and miss the high-amplitude daily and weekly "
+        "fluctuations of the 321-client sum; the absolute MAE and RMSE values "
+        "are the operationally meaningful comparison for this aggregated "
+        "target."
     ),
     "On ETTh1/HUFL, the ranking changes": (
         "On ETTh1/HUFL, the ordering is more compressed and horizon-dependent. "
@@ -208,7 +323,7 @@ REPLACEMENTS: dict[str, str] = {
     "The Diebold-Mariano tests reject equal predictive accuracy": (
         "The Diebold-Mariano tests on seed-averaged per-window absolute errors "
         "reject the null of equal predictive accuracy for every top-1 vs top-2 "
-        "comparison in Table 6 with p < 0.005 [8]. The pooled-error formulation "
+        "comparison in Table VI with p < 0.005 [8]. The pooled-error formulation "
         "is more conservative than a single-seed comparison because it uses "
         "≈ 5–6 thousand windows aligned across seeds, so the leader ordering on "
         "ECL (iTransformer over DLinear) and on ETTh1 (Chronos-Bolt at H=24, "
@@ -236,8 +351,8 @@ REPLACEMENTS: dict[str, str] = {
         "actionable. On ECL, supervised neural models achieve roughly 8× lower "
         "MAE than foundation models at single-window inference latencies of "
         "55–75 ms, comparable to TimesFM (100–200 ms) and Chronos-Bolt "
-        "(15–45 ms). XGBoost remains the cheapest accurate option in absolute "
-        "terms (7–43 ms inference, no GPU memory) and is therefore competitive "
+        "(15–45 ms). XGBoost remains the cheapest CPU-only option in absolute "
+        "terms (≈ 12–73 ms inference, no GPU memory) and is therefore competitive "
         "when CPU-only deployment is required and a ±20% MAE penalty relative "
         "to iTransformer is acceptable. On ETTh1 the absolute MAE gap among "
         "the top four methods is below 5%, so deployment factors such as "
@@ -261,7 +376,7 @@ REPLACEMENTS: dict[str, str] = {
         "first-order experimental factor for transformer-based forecasters. An "
         "earlier configuration of this protocol with a 500-step optimizer "
         "budget reported MAE values for DLinear, PatchTST, and iTransformer "
-        "roughly an order of magnitude higher than those in Table 4. "
+        "roughly an order of magnitude higher than those in Tables III and IV. "
         "Increasing the budget to 5000 steps with validation-driven early "
         "stopping triggered convergence within 1–2 minutes of GPU time per "
         "configuration and uncovered the rankings reported here. This is "
@@ -310,10 +425,6 @@ REPLACEMENTS: dict[str, str] = {
         "budget is a first-order experimental factor for transformer-based "
         "forecasters, and the relative ranking of model families is highly "
         "dataset-dependent rather than universal."
-    ),
-    "Diebold-Mariano tests for the top two models by MAE at seed 42.": (
-        "Diebold-Mariano tests for the top two models by mean MAE, computed on "
-        "seed-averaged per-window absolute errors."
     ),
     "A further limitation is that the study reports deterministic point forecasts": (
         "A further limitation is that the study reports deterministic point "
