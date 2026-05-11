@@ -1,65 +1,102 @@
 # Short-Term Electricity Load Forecasting Benchmark
 
 This repository contains a reproducible benchmark for short-term electricity
-load forecasting with classical statistical models, gradient-boosted trees,
-neural forecasting models, and time-series foundation models.
+load forecasting that compares classical statistical models, gradient-boosted
+trees, neural forecasting models, and time-series foundation models under a
+single chronological evaluation protocol.
 
 The primary dataset is ECL aggregate load. ETTh1/HUFL is used as a secondary
 industrial time-series benchmark. The ETTh1 `OT` column is not used as an
 electricity-load target because it represents transformer oil temperature.
 
-## Quick Start
+## Environments
+
+Two conda/mamba environments are provided:
+
+- `environment.yml` (`electr-forecast`): light environment with pandas,
+  scikit-learn, XGBoost, StatsForecast, plotly, python-docx. Used for
+  classical baselines, XGBoost tuning, figures, statistical tests.
+- `environment_foundation.yml` (`electr-forecast-foundation`): heavier
+  environment with PyTorch + CUDA, NeuralForecast, Chronos, and TimesFM.
+  Used for DLinear, PatchTST, iTransformer, Chronos-Bolt-Small, TimesFM 2.5.
 
 ```bash
 mamba env create -f environment.yml
-mamba activate electr-forecast
-python -m src.experiments.run_experiment --dataset synthetic --model seasonal_naive --horizon 24 --seed 42 --smoke
+mamba env create -f environment_foundation.yml
 ```
 
-The default environment supports data processing, classical baselines, XGBoost,
-metrics, statistical tests, and figure generation. GPU and foundation-model
-dependencies are isolated in `environment_foundation.yml` because PyTorch/CUDA
-and pretrained forecasting packages are substantially heavier.
+## Reproducing the paper results
 
-Run a small real-data baseline:
+`results/main_results_final.csv` and `results/stat_tests_final.csv` are
+produced by the commands below. The two environments are split because
+PyTorch and the foundation-model dependencies are isolated from the light
+environment.
 
 ```bash
-python -m src.experiments.run_all --datasets ecl etth1 --models seasonal_naive --horizons 24 96 168 --seeds 42
-python -m src.figures.make_figures --results results/main_results.csv --output-dir figures
-python -m src.evaluation.run_stat_tests --results results/main_results.csv --output results/stat_tests.csv
+# Classical baselines + XGBoost grid-tune (CPU, no PyTorch needed):
+mamba run -n electr-forecast python -m src.experiments.run_all \
+    --models seasonal_naive sarima xgboost \
+    --output results/main_results_final.csv
+
+# Neural forecasting + foundation models (GPU recommended):
+mamba run -n electr-forecast-foundation python -m src.experiments.run_all \
+    --models dlinear patchtst itransformer chronos_bolt_small timesfm \
+    --max-steps 5000 \
+    --output results/main_results_final.csv
+
+# Seed-pooled Diebold-Mariano tests on per-window errors:
+mamba run -n electr-forecast python -m src.evaluation.run_stat_tests
+
+# Regenerate figures from the merged final CSV:
+mamba run -n electr-forecast python -m src.figures.make_figures \
+    --results results/main_results_final.csv \
+    --output-dir figures --format pdf \
+    --png-output-dir paper/docx_figures
 ```
 
-After installing the foundation environment, extend `--models` to `xgboost`,
-`auto_arima`, `chronos_bolt_small`, `timesfm`, `dlinear`, `patchtst`, and
-`itransformer`. Full neural and foundation-model runs are GPU-intensive and
-should be launched deliberately.
+Defaults of `run_all`:
 
-The final reported result tables are stored in:
+- Datasets: `ecl etth1`
+- Horizons: `24 96 168`
+- Seeds: `42 43 44 45 46`
+- Input window: `336` hours
+- `--max-steps 5000` with validation-driven early stopping (patience 10
+  over 50-step checks) for DLinear / PatchTST / iTransformer
+- XGBoost is run through `src.experiments.tune_xgboost`: a grid search
+  over `max_depth ∈ {4, 6}`, `n_estimators ∈ {500, 1000}`,
+  `learning_rate ∈ {0.05, 0.1}` selected on the validation split, then
+  five-seed evaluation on the test split
+- Deterministic models (SeasonalNaive, SARIMA, Chronos-Bolt, TimesFM) are
+  evaluated once per dataset/horizon
 
-- `results/main_results_final.csv`
-- `results/stat_tests_final.csv`
+Running with `--smoke` substitutes a synthetic series for the real
+datasets and is useful for a quick end-to-end sanity check.
 
-The final manuscript is `paper/main_scopus.docx`.
-
-## Repository Layout
+## Repository layout
 
 ```text
-configs/        Experiment and model configs
-data/           Raw and processed datasets
-src/data/       Downloading, validation, preprocessing, windowing
-src/models/     Baselines, XGBoost, NeuralForecast model helpers
-src/evaluation/ Metrics, timing, statistical tests
-src/experiments Experiment CLIs
-src/figures/    Figure generation
-results/        Final CSV result tables
-figures/        Publication figures
-paper/          Final manuscript and embedded figure assets
+configs/                Experiment and model configs (reference only)
+data/                   Raw and processed datasets (raw files git-ignored)
+src/data/               Loading, validation, splits, scaling, windowing
+src/models/             Baselines, XGBoost, NeuralForecast model helpers
+src/evaluation/         Metrics, timing, Diebold-Mariano tests
+src/experiments/        Per-model CLIs and the run_all orchestrator
+src/figures/            Figure generation
+results/                main_results_final.csv, stat_tests_final.csv
+figures/                Publication figures (PDF) and PNG copies for DOCX
+paper/                  Manuscript and embedded figure assets
 ```
 
-## Reproducibility Rules
+## Reproducibility rules
 
-- No test-set hyperparameter tuning.
-- Preprocessing is fitted only on the permitted training split.
-- Public-dataset pretraining contamination for foundation models is treated as a limitation.
-- ETTh1 `OT` is not reported as electricity load.
-- Missing numerical results must remain explicitly marked, never fabricated.
+- No test-set hyperparameter tuning. Validation splits are used for all
+  hyperparameter selection (XGBoost grid, neural learning rate, SARIMA AICc).
+- Preprocessing (StandardScaler) is fitted only on the training split.
+  Neural-forecast models have their internal scaler disabled to avoid
+  double-scaling pre-standardised inputs.
+- Public-dataset pretraining contamination for foundation models is treated
+  as a limitation in the paper.
+- ETTh1 `OT` is not reported as an electricity-load target.
+- The `iTransformer` model is run with `n_series=1` (univariate) so that
+  all eight models share the same protocol; this is acknowledged in
+  Limitations.

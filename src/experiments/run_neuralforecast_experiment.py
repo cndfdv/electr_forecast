@@ -334,7 +334,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--horizon", type=int, required=True)
     parser.add_argument("--input-length", type=int, default=336)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--max-steps", type=int, default=500)
+    parser.add_argument("--max-steps", type=int, default=5000)
     parser.add_argument("--step-size", type=int, default=1)
     parser.add_argument("--latency-repeats", type=int, default=20)
     parser.add_argument("--learning-rates", nargs="+", default=["1e-3", "5e-4"])
